@@ -4,9 +4,7 @@ import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedReader;
@@ -35,18 +33,18 @@ public class UploadController {
             try (Reader reader = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
 
                 // create csv bean reader
-                CsvToBean<User> csvToBean = new CsvToBeanBuilder(reader)
-                        .withType(User.class)
+                CsvToBean<Response> csvToBean = new CsvToBeanBuilder(reader)
+                        .withType(Response.class)
                         .withIgnoreLeadingWhiteSpace(true)
                         .build();
 
                 // convert `CsvToBean` object to list of users
-                List<User> users = csvToBean.parse();
+                List<Response> responses = csvToBean.parse();
 
                 // TODO: save users in DB?
 
                 // save users list on model
-                model.addAttribute("users", users);
+                model.addAttribute("users", responses);
                 model.addAttribute("status", true);
 
             } catch (Exception ex) {

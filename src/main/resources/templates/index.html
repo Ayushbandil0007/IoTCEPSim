@@ -1,21 +1,239 @@
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
-    <head>
-        <meta charset="utf-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <title>k</title>
-    </head>
+<head>
+    <title>CEPSim</title>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/js/mdb.min.js"></script>
+    <script type="text/javascript" src="../static/js/main.js" th:src="@{/js/main.js}"></script>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.css"/>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/css/mdb.min.css"/>
+
+    <style>
+        body {
+          font-family: Arial;
+        }
+
+        /* Style the tab */
+        .tab {
+          overflow: hidden;
+          border: 1px solid #ccc;
+          background-color: #f1f1f1;
+          width: 100%;
+        }
+
+        /* Style the buttons inside the tab */
+        .tab button {
+          background-color: inherit;
+          float: left;
+          border: none;
+          outline: none;
+          cursor: pointer;
+          padding: 10px;
+          transition: 0.3s;
+          font-size: 15px;
+        }
+
+        /* Change background color of buttons on hover */
+        .tab button:hover {
+          background-color: #ddd;
+        }
+
+        /* Create an active/current tablink class */
+        .tab button.active {
+          background-color: #ccc;
+        }
+
+        /* Style the tab content */
+        .tabcontent {
+          display: none;
+          padding: 6px 12px;
+          border: 1px solid #ccc;
+          border-top: none;
+          width: 100%;
+        }
+
+        .pointer {
+            cursor: pointer;
+        }
+
+        .card-body {
+            overflow-wrap: anywhere;
+        }
+
+        .card {
+            height: 100%;
+        }
+
+        .form-control-sm {
+            width: 100%;
+        }
+
+        .hidden {
+            display: none;
+        }
 
 
-    <form method="POST" th:action="@{/upload-csv-file}" enctype="multipart/form-data">
-        <div class="form-group mt-3">
-            <label for="file">Select a CSV file</label>
-            <input type="file" name="file" class="form-control-file" id="file" accept=".csv"/>
+    </style>
+</head>
+
+<body>
+<h1 class="display-5 text-center">VTA-IH Simulator</h1>
+
+<h5>A framework that can be applied to a fog-based system to identify effective digital forensics techniques and then mitigate the
+    erroneous system behavior</h5>
+<p>Select a system:</p>
+
+<div class="row">
+    <div class="col-3">
+        <div class="tab">
+            <button class="tablinks" onclick="openCity(event, '1')">Secure Facility</button>
+            <button class="tablinks" onclick="openCity(event, '2')">Wildfire</button>
+            <button class="tablinks" onclick="openCity(event, '3')">System 3</button>
         </div>
-        <button type="submit" class="btn btn-primary">Import Users</button>
-    </form>
+
+        <div id="1" class="tabcontent">
+            <h4>Secure Facility Lock Door</h4>
+            <div class="dropdown">
+                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Select Preset
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="#">Preset1: Correct flow</a>
+                    <a class="dropdown-item" href="#">Preset2: Pincode missing</a>
+                    <a class="dropdown-item" href="#">Preset3: Door unclosed</a>
+                </div>
+            </div>
+        </div>
+
+        <div id="2" class="tabcontent">
+            <h4>Forest Wildfile Monitoring</h4>
+            <div class="dropdown">
+                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton_1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Select Preset
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="#">Preset1: Correct flow</a>
+                    <a class="dropdown-item" href="#">Preset2: Pincode missing</a>
+                    <a class="dropdown-item" href="#">Preset3: Door unclosed</a>
+                </div>
+            </div>
+        </div>
+
+        <div id="3" class="tabcontent">
+            <h3>Tokyo</h3>
+        </div>
+    </div>
+
+    <div class="col-8 rowcontent hidden" id="row1">
+        <div id="draggable-x" class="row">
+            <div class="col-md-4 col-lg-2" id="i1">
+                <div class="card">
+                    <h6 class="card-header primary-color white-text pointer">Access Card Event</h6>
+                    <div class="card-body">
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="i1Switch" checked="true"/>
+                            <label class="custom-control-label" for="i1Switch"></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-2" id="i2">
+                <div class="card">
+                    <h6 class="card-header green white-text pointer">Biometric Event</h6>
+                    <div class="card-body">
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="i2Switch" checked="true"/>
+                            <label class="custom-control-label" for="i2Switch"></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-2" id="i3">
+                <div class="card">
+                    <h6 class="card-header deep-orange white-text pointer">Pin Code Event</h6>
+                    <div class="card-body">
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="i3Switch" checked="true"/>
+                            <label class="custom-control-label" for="i3Switch"></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-2" id="i4">
+                <div class="card">
+                    <h6 class="card-header grey white-text pointer">Rotary Motion P</h6>
+                    <div class="card-body">
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="i4Switch" checked="true"/>
+                            <label class="custom-control-label" for="i4Switch"></label>
+                        </div>
+                        <input type="number" class="form-control-sm" id="i4AngDis" placeholder="Ang. Displacement" value="70"/>
+                        <input type="number" class="form-control-sm" id="i4Dur" placeholder="Duration" value="4.2"/>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-2" id="i5">
+                <div class="card">
+                    <h6 class="card-header yellow white-text pointer">Ultrasonic Event</h6>
+                    <div class="card-body">
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="i5Switch" checked="true"/>
+                            <label class="custom-control-label" for="i5Switch"></label>
+                        </div>
+                        <input type="number" class="form-control-sm" id="i5Dis" placeholder="Distances" value="42"/>
+                        <input type="number" class="form-control-sm" id="i5Dur" placeholder="Duration" value="3.1"/>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-2" id="i6">
+                <div class="card">
+                    <h6 class="card-header grey white-text pointer">Rotary Motion N</h6>
+                    <div class="card-body">
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="i6Switch" checked="true"/>
+                            <label class="custom-control-label" for="i6Switch"></label>
+                        </div>
+                        <input type="number" class="form-control-sm" id="i6AngDis" placeholder="Ang. Displacement" value="-70" />
+                        <input type="number" class="form-control-sm" id="i6Dur" placeholder="Duration" value="1.8" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button type="button" class="btn btn-success" th:onclick="'javascript:submit()'">Get DA</button>
+    </div>
+    <div class="col-8 rowcontent hidden" id="row2">
+        <button type="button" class="btn btn-success" th:onclick="'javascript:submit()'">ROW 2</button>
+    </div>
+    <div class="col-8 rowcontent hidden" id="row3">
+        <button type="button" class="btn btn-success" th:onclick="'javascript:submit()'">ROW 3</button>
+    </div>
+</div>
+
+<!-- Central Modal Medium -->
+<div class="modal fade" id="centralModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <!--Content-->
+        <div class="modal-content">
+            <!--Header-->
+            <div class="modal-header">
+                <h4 class="modal-title w-100" id="myModalLabel">CEP Simulation</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <!--Body-->
+            <div id="myModalBody" class="modal-body">
+                ...
+            </div>
+        </div>
+    </div>
+</div>
+</body>
 
 </html>

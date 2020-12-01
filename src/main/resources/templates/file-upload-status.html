@@ -8,7 +8,7 @@
                 <span th:text="${message}"></span>
             </div>
 
-            <!--display users list-->
+            <!--display responses list-->
             <table class="table table-striped" th:if="${status}">
                 <thead>
                 <tr>
@@ -21,13 +21,13 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="user, i : ${users}">
+                <tr th:each="response, i : ${responses}">
                     <th scope="row" th:text="${i.index + 1}"></th>
-                    <td th:text="${user.id}"></td>
-                    <td th:text="${user.name}"></td>
-                    <td th:text="${user.email}"></td>
-                    <td th:text="${user.countryCode}"></td>
-                    <td th:text="${user.age}"></td>
+                    <td th:text="${response.id}"></td>
+                    <td th:text="${response.name}"></td>
+                    <td th:text="${response.email}"></td>
+                    <td th:text="${response.countryCode}"></td>
+                    <td th:text="${response.age}"></td>
                 </tr>
                 </tbody>
             </table>
